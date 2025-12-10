@@ -7,6 +7,21 @@ interface Feature {
   label: string;
 }
 
+const features: Feature[] = [
+    {
+      value: "+100",
+      label: "Units Ready"
+    },
+    {
+      value: "+60K",
+      label: "Customers"
+    },
+    {
+      value: "+70K",
+      label: "Review"
+    }
+  ];
+
 function useCountAnimation(
   targetValue: string,
   duration: number = 1000,
@@ -111,21 +126,6 @@ function useIntersectionObserver(
 export default function Features() {
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef, 0.2);
-
-  const features: Feature[] = [
-    {
-      value: "+100",
-      label: "Units Ready"
-    },
-    {
-      value: "+60K",
-      label: "Customers"
-    },
-    {
-      value: "+70K",
-      label: "Review"
-    }
-  ];
 
   return (
     <section ref={sectionRef} className="bg-white p-[80px]">
