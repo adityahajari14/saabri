@@ -31,21 +31,21 @@ const blogs = {
 
 export default function Blogs() {
   return (
-    <section className="bg-white p-[80px]">
-      <div className="flex flex-col gap-[55px] items-start">
+    <section className="bg-white p-6 md:p-12 lg:p-[80px]">
+      <div className="flex flex-col gap-8 md:gap-12 lg:gap-[55px] items-start">
         {/* Header */}
         <div className="w-full">
-          <h2 className="font-medium text-[#12161D] font-noto-sans text-5xl leading-[52px]">
+          <h2 className="font-medium text-[#12161D] font-noto-sans text-2xl md:text-3xl lg:text-5xl leading-[1.2] md:leading-[52px]">
             Always check our latest blog
           </h2>
         </div>
 
         {/* Content Container */}
-        <div className="flex gap-[30px] items-start w-full">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-[30px] items-start w-full">
           {/* Left Content - Featured Blog */}
-          <div className="flex flex-col gap-[24px] h-[496px] w-[626px] shrink-0">
+          <div className="flex flex-col gap-4 md:gap-6 lg:gap-[24px] w-full lg:h-[496px] lg:w-[626px] shrink-0">
             {/* Image with Author Overlay */}
-            <div className="relative w-full h-[400px] rounded-[16px] overflow-hidden">
+            <div className="relative w-full h-[250px] md:h-[300px] lg:h-[400px] rounded-[16px] overflow-hidden">
               <Image
                 src={blogs.featured.image}
                 alt={blogs.featured.title}
@@ -54,8 +54,8 @@ export default function Blogs() {
               />
               
               {/* Author Info Overlay */}
-              <div className="absolute bottom-0 left-0 bg-white flex gap-[12px] items-center p-4">
-                <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden shrink-0">
+              <div className="absolute bottom-0 left-0 bg-white flex gap-2 md:gap-3 lg:gap-[12px] items-center p-3 md:p-4">
+                <div className="relative w-10 h-10 md:w-12 md:h-12 lg:w-[50px] lg:h-[50px] rounded-full overflow-hidden shrink-0">
                   <Image
                     src={blogs.featured.author.avatar}
                     alt={blogs.featured.author.name}
@@ -64,7 +64,7 @@ export default function Blogs() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="font-medium text-[#1b2021] text-[13px] tracking-[0.13px] font-poppins">
+                  <p className="font-medium text-[#1b2021] text-xs md:text-sm lg:text-[13px] tracking-[0.13px] font-poppins">
                     {blogs.featured.author.name}
                   </p>
                   <p className="font-normal text-[#828282] text-[10px] tracking-[0.1px] font-poppins">
@@ -76,34 +76,34 @@ export default function Blogs() {
 
             {/* Text Content */}
             <div className="flex flex-col gap-2">
-              <h3 className="font-medium text-[#1b2021] text-2xl tracking-[0.24px] font-poppins">
+              <h3 className="font-medium text-[#1b2021] text-xl md:text-2xl tracking-[0.24px] font-poppins">
                 {blogs.featured.title}
               </h3>
-              <p className="font-normal text-[#828282] text-base tracking-[0.16px] font-poppins">
+              <p className="font-normal text-[#828282] text-sm md:text-base tracking-[0.16px] font-poppins">
                 {blogs.featured.description}
               </p>
             </div>
           </div>
 
           {/* Right Content - Two Blog Posts */}
-          <div className="flex flex-col gap-[24px] w-[626px] shrink-0">
+          <div className="flex flex-col gap-4 md:gap-6 lg:gap-[24px] w-full lg:w-[626px] shrink-0">
             {/* First Blog Post */}
             <Link
               href="#"
-              className="flex gap-[24px] items-center justify-center w-full"
+              className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-[24px] items-start md:items-center w-full"
             >
               {/* Text Content */}
-              <div className="flex flex-col gap-8 grow min-w-0">
-                <h3 className="font-medium text-[#1b2021] text-2xl tracking-[0.24px] font-poppins whitespace-pre-line">
+              <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 grow min-w-0 w-full md:w-auto order-2 md:order-1">
+                <h3 className="font-medium text-[#1b2021] text-xl md:text-2xl tracking-[0.24px] font-poppins whitespace-pre-line">
                   {blogs.right[0].title}
                 </h3>
-                <p className="font-normal text-[#828282] text-base tracking-[0.16px] font-poppins">
+                <p className="font-normal text-[#828282] text-sm md:text-base tracking-[0.16px] font-poppins">
                   {blogs.right[0].author}
                 </p>
               </div>
 
               {/* Image */}
-              <div className="relative h-[184px] w-[286px] shrink-0 rounded-[16px] overflow-hidden">
+              <div className="relative h-[200px] md:h-[184px] w-full md:w-[286px] shrink-0 rounded-[16px] overflow-hidden order-1 md:order-2">
                 <Image
                   src={blogs.right[0].image}
                   alt={blogs.right[0].title}
@@ -116,20 +116,20 @@ export default function Blogs() {
             {/* Second Blog Post */}
             <Link
               href="#"
-              className="flex gap-[24px] items-center justify-center w-full"
+              className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-[24px] items-start md:items-center w-full"
             >
               {/* Text Content */}
-              <div className="flex flex-col gap-6 grow min-w-0">
-                <h3 className="font-medium text-[#1b2021] text-2xl tracking-[0.24px] font-poppins">
+              <div className="flex flex-col gap-4 md:gap-6 grow min-w-0 w-full md:w-auto order-2 md:order-1">
+                <h3 className="font-medium text-[#1b2021] text-xl md:text-2xl tracking-[0.24px] font-poppins">
                   {blogs.right[1].title}
                 </h3>
-                <p className="font-normal text-[#828282] text-base tracking-[0.16px] font-poppins">
+                <p className="font-normal text-[#828282] text-sm md:text-base tracking-[0.16px] font-poppins">
                   {blogs.right[1].author}
                 </p>
               </div>
 
               {/* Image */}
-              <div className="relative h-[184px] w-[286px] shrink-0 rounded-[16px] overflow-hidden">
+              <div className="relative h-[200px] md:h-[184px] w-full md:w-[286px] shrink-0 rounded-[16px] overflow-hidden order-1 md:order-2">
                 <Image
                   src={blogs.right[1].image}
                   alt={blogs.right[1].title}

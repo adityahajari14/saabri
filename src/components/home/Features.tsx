@@ -128,23 +128,23 @@ export default function Features() {
   const isVisible = useIntersectionObserver(sectionRef, 0.2);
 
   return (
-    <section ref={sectionRef} className="bg-white p-[80px]">
+    <section ref={sectionRef} className="bg-white p-6 md:p-12 lg:p-[80px]">
       <div className="max-w-[1280px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-[3px] items-start">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-[3px] items-start">
           {/* Left Section - Title */}
-          <h2 className="font-medium text-[#12161D] font-noto-sans text-[44px] leading-[52px] w-full lg:w-[520px] shrink-0">
+          <h2 className="font-medium text-[#12161D] font-noto-sans text-3xl md:text-4xl lg:text-[44px] leading-[1.2] md:leading-[52px] w-full lg:w-[520px] shrink-0">
             Enjoy Quality Life in Perumnas Housing
           </h2>
 
           {/* Right Section */}
-          <div className="flex flex-col gap-[80px] grow items-start w-full lg:w-auto">
+          <div className="flex flex-col gap-8 md:gap-12 lg:gap-[80px] grow items-start w-full lg:w-auto">
             {/* Paragraph */}
-            <p className="font-normal text-[#61656E] font-poppins text-[20px] leading-[1.36] w-full">
+            <p className="font-normal text-[#61656E] font-poppins text-base md:text-lg lg:text-[20px] leading-[1.36] w-full">
               Sabri is the right choice for those of you who are looking for comfortable, safe and affordable housing. With the cluster concept, you can enjoy the privacy and comfort of living in a beautiful and clean environment. Apart from that, you can also enjoy the various facilities provided, such as playgrounds, sports fields, shopping centers, schools, and others.
             </p>
 
             {/* Key Features */}
-            <div className="flex flex-row justify-between items-start w-full">
+            <div className="flex flex-row justify-between items-start gap-4 md:gap-6 w-full">
               {features.map((feature, index) => (
                 <AnimatedFeature
                   key={index}
@@ -184,11 +184,11 @@ function AnimatedFeature({
   const animatedValue = useCountAnimation(feature.value, 2000, shouldAnimate);
 
   return (
-    <div className="flex flex-col gap-[12px] grow basis-0 items-start">
-      <p className="font-medium text-[#12161D] font-noto-sans text-[36px] leading-[48px] w-full">
+    <div className="flex flex-col gap-2 md:gap-[12px] grow basis-0 items-start w-full sm:w-auto">
+      <p className="font-medium text-[#12161D] font-noto-sans text-2xl md:text-3xl lg:text-[36px] leading-[1.3] md:leading-[48px] w-full">
         {animatedValue}
       </p>
-      <p className="font-normal text-[#61656E] font-poppins text-[18px] leading-[26px] w-full">
+      <p className="font-normal text-[#61656E] font-poppins text-base md:text-lg lg:text-[18px] leading-[26px] w-full">
         {feature.label}
       </p>
     </div>
