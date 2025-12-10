@@ -9,7 +9,7 @@ interface Feature {
 
 function useCountAnimation(
   targetValue: string,
-  duration: number = 2000,
+  duration: number = 1000,
   isVisible: boolean
 ): string {
   const [count, setCount] = useState(0);

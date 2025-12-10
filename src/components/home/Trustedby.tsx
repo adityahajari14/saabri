@@ -42,8 +42,8 @@ export default function Trustedby() {
         <section className="bg-white my-6 px-4 md:px-6 lg:px-20">
         <div className="container mx-auto flex flex-col">
             <div className="flex flex-row items-center justify-between">
-                {logos.map((logo) => (
-                    <Image src={logo.src} alt={logo.alt} width={100} height={100} />
+                {logos.map((logo, index) => (
+                    <Image key={index} src={logo.src} alt={logo.alt} width={100} height={100} />
                 ))}
             </div>
         </div>
