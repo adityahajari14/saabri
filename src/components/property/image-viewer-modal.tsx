@@ -34,12 +34,14 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
   }, [isOpen, initialIndex])
 
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % images.length)
-  }, [images.length])
+    const validImages = images.filter((img) => img && img.trim() !== '');
+    setCurrentIndex((prev) => (prev + 1) % validImages.length)
+  }, [images])
 
   const handlePrevious = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
-  }, [images.length])
+    const validImages = images.filter((img) => img && img.trim() !== '');
+    setCurrentIndex((prev) => (prev - 1 + validImages.length) % validImages.length)
+  }, [images])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -67,6 +69,11 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
 
   if (typeof window === 'undefined') return null
 
+  // Filter out empty images
+  const validImages = images.filter((img) => img && img.trim() !== '');
+  
+  if (validImages.length === 0) return null
+
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       {/* Backdrop */}
@@ -82,7 +89,7 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
           <div className="flex-1">
             <p className="text-lg font-semibold">{propertyTitle}</p>
             <p className="text-sm text-gray-400">
-              Image {currentIndex + 1} of {images.length}
+              Image {currentIndex + 1} of {validImages.length}
             </p>
           </div>
           <button
@@ -99,7 +106,7 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
         {/* Main Image */}
         <div className="flex-1 flex items-center justify-center px-6 pb-6 relative">
           {/* Previous Button */}
-          {images.length > 1 && (
+          {validImages.length > 1 && (
             <button
               onClick={handlePrevious}
               className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
@@ -113,18 +120,26 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
 
           {/* Image Container */}
           <div className="relative w-full h-full max-w-6xl max-h-[70vh]">
-            <Image
-              src={images[currentIndex]}
-              alt={`${propertyTitle} - Image ${currentIndex + 1}`}
-              fill
-              className="object-contain"
-              sizes="100vw"
-              priority
-            />
+            {validImages[currentIndex] && validImages[currentIndex].trim() !== '' ? (
+              <Image
+                src={validImages[currentIndex]}
+                alt={`${propertyTitle} - Image ${currentIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="100vw"
+                priority
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-800">
+                <svg className="w-24 h-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+            )}
           </div>
 
           {/* Next Button */}
-          {images.length > 1 && (
+          {validImages.length > 1 && (
             <button
               onClick={handleNext}
               className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
@@ -138,10 +153,10 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
         </div>
 
         {/* Thumbnail Strip */}
-        {images.length > 1 && (
+        {validImages.length > 1 && (
           <div className="bg-black/50 backdrop-blur-sm p-4">
             <div className="flex gap-3 overflow-x-auto max-w-6xl mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent p-1">
-              {images.map((image, idx) => (
+              {validImages.map((image, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}

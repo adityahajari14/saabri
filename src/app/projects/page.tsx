@@ -6,7 +6,7 @@ import Footer from '../../components/Footer';
 import PropertyCard from '../../components/property/property-card';
 import FilterModal from '../../components/property/FilterModal';
 import FAQ from '../../components/home/FAQ';
-import { getAllProperties, filterProperties, FilterOptions, Property } from '../../lib/properties';
+import { getPaginatedProperties, FilterOptions, Property } from '../../lib/properties';
 
 export default function ProjectsPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -14,46 +14,58 @@ export default function ProjectsPage() {
   const [filters, setFilters] = useState<FilterOptions>({});
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalProperties, setTotalProperties] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const propertiesPerPage = 9;
 
+  // Fetch properties from API
   useEffect(() => {
-    const allProperties = getAllProperties();
-    setProperties(allProperties);
-  }, []);
+    const loadProperties = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Combine search query with filters
+        const apiFilters: FilterOptions = {
+          ...filters,
+        };
+        
+        // Add search to filters if provided
+        if (searchQuery.trim()) {
+          apiFilters.search = searchQuery.trim();
+        }
+        
+        const result = await getPaginatedProperties(apiFilters, currentPage, propertiesPerPage);
+        
+        setProperties(result.properties);
+        setTotalPages(result.pagination.totalPages);
+        setTotalProperties(result.pagination.total);
+      } catch (err) {
+        console.error('Error loading properties:', err);
+        setError('Failed to load properties. Please try again later.');
+        setProperties([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const filteredProperties = useMemo(() => {
-    let result = properties;
-    
-    if (Object.keys(filters).length > 0) {
-      result = filterProperties(result, filters);
-    }
-    
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter((property) =>
-        property.title.toLowerCase().includes(query) ||
-        property.location.toLowerCase().includes(query)
-      );
-    }
-    
-    return result;
-  }, [properties, filters, searchQuery]);
+    loadProperties();
+  }, [filters, searchQuery, currentPage]);
 
-  const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
-  const startIndex = (currentPage - 1) * propertiesPerPage;
-  const paginatedProperties = filteredProperties.slice(startIndex, startIndex + propertiesPerPage);
-
+  // Reset to page 1 when filters or search change
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, searchQuery]);
 
   const propertyRows = useMemo(() => {
     const rows: Property[][] = [];
-    for (let i = 0; i < paginatedProperties.length; i += 3) {
-      rows.push(paginatedProperties.slice(i, i + 3));
+    for (let i = 0; i < properties.length; i += 3) {
+      rows.push(properties.slice(i, i + 3));
     }
     return rows;
-  }, [paginatedProperties]);
+  }, [properties]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -98,13 +110,35 @@ export default function ProjectsPage() {
             </button>
           </div>
 
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+              <div className="text-black text-lg md:text-xl font-semibold">Loading properties...</div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !isLoading && (
+            <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+              <p className="text-red-600 text-lg md:text-xl font-semibold">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-[#1f2462] text-white px-6 py-3 rounded-[4px] hover:bg-[#1a1f5a] transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          )}
+
           {/* Properties Grid */}
-          {filteredProperties.length === 0 ? (
+          {!isLoading && !error && properties.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
               <p className="text-black text-lg md:text-xl font-semibold">No properties found</p>
               <p className="text-gray-600 text-sm md:text-base">Try adjusting your filters or search query</p>
             </div>
-          ) : (
+          )}
+
+          {!isLoading && !error && properties.length > 0 && (
             <div className="flex flex-col gap-[30px] mb-[30px]">
               {propertyRows.map((row, rowIndex) => (
                 <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px]">
@@ -117,7 +151,7 @@ export default function ProjectsPage() {
           )}
 
           {/* Pagination */}
-          {totalPages > 1 && (
+          {!isLoading && !error && totalPages > 1 && (
             <div className="flex items-center justify-center gap-[9px] mb-8 md:mb-12 lg:mb-[52px]">
               <button
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}

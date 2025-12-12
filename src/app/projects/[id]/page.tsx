@@ -28,15 +28,25 @@ export default function PropertyDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
-    if (id) {
-      const propertyData = getPropertyById(id);
-      if (propertyData) {
-        setProperty(propertyData);
-        const related = getRelatedProperties(id, propertyData.type, 3);
-        setRelatedProperties(related);
+    const loadProperty = async () => {
+      if (id) {
+        setIsLoading(true);
+        try {
+          const propertyData = await getPropertyById(id);
+          if (propertyData) {
+            setProperty(propertyData);
+            const related = await getRelatedProperties(id, propertyData.type, 3);
+            setRelatedProperties(related);
+          }
+        } catch (error) {
+          console.error('Error loading property:', error);
+        } finally {
+          setIsLoading(false);
+        }
       }
-      setIsLoading(false);
-    }
+    };
+
+    loadProperty();
   }, [id]);
 
   if (isLoading) {
@@ -62,7 +72,17 @@ export default function PropertyDetailPage() {
     );
   }
 
-  const images = [property.mainImage, ...property.gallery.filter((img: string) => img !== property.mainImage)];
+  // Filter out empty images and ensure we have at least one image
+  const allImages = [
+    property.mainImage,
+    ...property.gallery.filter((img: string) => img && img.trim() !== '' && img !== property.mainImage)
+  ].filter((img: string) => img && img.trim() !== '');
+  
+  // Use placeholder if no images available
+  const images = allImages.length > 0 
+    ? allImages 
+    : ['https://via.placeholder.com/800x600?text=No+Image'];
+  
   const descriptionPreview = property.description.length > 200 ? property.description.substring(0, 200) : property.description;
   const hasMoreDescription = property.description.length > 200;
 
@@ -76,58 +96,70 @@ export default function PropertyDetailPage() {
             {/* Left: Image Gallery */}
             <div className="flex flex-col sm:flex-row gap-4 md:gap-5 lg:gap-[19px] flex-1">
               {/* Main Image */}
-              <div 
-                className="relative w-full sm:w-[400px] lg:w-[569px] h-[250px] sm:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden cursor-pointer shrink-0"
-                onClick={() => setIsImageViewerOpen(true)}
-              >
-                <Image
-                  src={images[selectedImage]}
-                  alt={property.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 569px"
-                  priority
-                />
-              </div>
+              {images[selectedImage] && images[selectedImage].trim() !== '' ? (
+                <div 
+                  className="relative w-full sm:w-[400px] lg:w-[569px] h-[250px] sm:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden cursor-pointer shrink-0 bg-gray-100"
+                  onClick={() => setIsImageViewerOpen(true)}
+                >
+                  <Image
+                    src={images[selectedImage]}
+                    alt={property.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 569px"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="relative w-full sm:w-[400px] lg:w-[569px] h-[250px] sm:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden bg-gray-200 flex items-center justify-center shrink-0">
+                  <svg className="w-20 h-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              )}
 
               {/* Thumbnails */}
-              <div className="flex flex-row sm:flex-col gap-3 md:gap-[15px]">
-                {images.slice(0, 5).map((image, idx) => {
-                  const isSelected = selectedImage === idx;
-                  const isLastWithMore = idx === 4 && images.length > 5 && !isSelected;
-                  
-                  return (
-                    <div
-                      key={idx}
-                      onClick={() => {
-                        if (isLastWithMore) {
-                          setIsImageViewerOpen(true);
-                        } else {
-                          setSelectedImage(idx);
-                        }
-                      }}
-                      className={`relative w-[80px] sm:w-[102px] h-[60px] sm:h-[75.6px] rounded-[10px] overflow-hidden cursor-pointer transition-all shrink-0 ${
-                        isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <Image
-                        src={image}
-                        alt={`Thumbnail ${idx + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="102px"
-                      />
-                      {isLastWithMore && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <span className="text-white text-xs md:text-sm font-semibold">
-                            +{images.length - 5}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+              {images.length > 0 && (
+                <div className="flex flex-row sm:flex-col gap-3 md:gap-[15px]">
+                  {images.slice(0, 5).map((image, idx) => {
+                    if (!image || image.trim() === '') return null;
+                    
+                    const isSelected = selectedImage === idx;
+                    const isLastWithMore = idx === 4 && images.length > 5 && !isSelected;
+                    
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          if (isLastWithMore) {
+                            setIsImageViewerOpen(true);
+                          } else {
+                            setSelectedImage(idx);
+                          }
+                        }}
+                        className={`relative w-[80px] sm:w-[102px] h-[60px] sm:h-[75.6px] rounded-[10px] overflow-hidden cursor-pointer transition-all shrink-0 bg-gray-100 ${
+                          isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
+                        }`}
+                      >
+                        <Image
+                          src={image}
+                          alt={`Thumbnail ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="102px"
+                        />
+                        {isLastWithMore && (
+                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                            <span className="text-white text-xs md:text-sm font-semibold">
+                              +{images.length - 5}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Right: Property Info - Match image height */}
