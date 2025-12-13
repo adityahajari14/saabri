@@ -89,15 +89,15 @@ export default function PropertyDetailPage() {
       <main className="bg-neutral-50 min-h-screen pt-[120px] pb-0">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-[100px]">
           {/* Main Content */}
-          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-[30px] mb-6 md:mb-8 lg:mb-[30px]">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-[30px] mb-6 md:mb-8 lg:mb-[30px]">
             {/* Left: Image Gallery */}
-            <div className="flex-1 w-full">
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 lg:gap-[19px]">
+            <div className="flex-1 w-full lg:w-auto">
+              <div className="flex flex-col sm:flex-row gap-4 lg:gap-[19px]">
                 {/* Main Image Container */}
-                <div className="w-full sm:w-auto flex-shrink-0">
+                <div className="w-full sm:flex-1 lg:w-[569px] lg:flex-none">
                   {images[selectedImage] && images[selectedImage].trim() !== '' ? (
                     <div 
-                      className="relative w-full sm:w-[400px] lg:w-[569px] aspect-[4/3] sm:aspect-auto sm:h-[300px] md:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden cursor-pointer bg-gray-100"
+                      className="relative w-full h-[280px] sm:h-[380px] md:h-[420px] lg:h-[443px] rounded-[10px] overflow-hidden cursor-pointer bg-gray-100"
                       onClick={() => setIsImageViewerOpen(true)}
                     >
                       <Image
@@ -105,12 +105,12 @@ export default function PropertyDetailPage() {
                         alt={property.title}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 569px"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 569px"
                         priority
                       />
                     </div>
                   ) : (
-                    <div className="relative w-full sm:w-[400px] lg:w-[569px] aspect-[4/3] sm:aspect-auto sm:h-[300px] md:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden bg-gray-200 flex items-center justify-center">
+                    <div className="relative w-full h-[280px] sm:h-[380px] md:h-[420px] lg:h-[443px] rounded-[10px] overflow-hidden bg-gray-200 flex items-center justify-center">
                       <svg className="w-20 h-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
@@ -119,11 +119,11 @@ export default function PropertyDetailPage() {
                 </div>
 
                 {/* Thumbnails Container */}
-                {images.length > 0 && (
+                {images.length > 1 && (
                   <div className="flex-shrink-0">
                     {/* Mobile: Horizontal Scrollable Thumbnails */}
                     <div className="sm:hidden w-full">
-                      <div className="flex flex-row gap-2 overflow-x-auto scrollbar-hide py-2 pb-2 -mx-4 px-6">
+                      <div className="flex flex-row gap-3 overflow-x-auto scrollbar-hide py-1 px-1">
                         {images.slice(0, 5).map((image, idx) => {
                           if (!image || image.trim() === '') return null;
                           
@@ -140,26 +140,26 @@ export default function PropertyDetailPage() {
                                   setSelectedImage(idx);
                                 }
                               }}
-                              className={`relative w-[70px] h-[52px] rounded-[10px] overflow-hidden cursor-pointer transition-all flex-shrink-0 bg-gray-100 p-[2px] ${
-                                isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
+                              className={`relative w-[72px] h-[54px] rounded-[8px] overflow-hidden cursor-pointer transition-all flex-shrink-0 ${
+                                isSelected 
+                                  ? 'ring-2 ring-[#1f2462] ring-offset-2' 
+                                  : 'opacity-70 hover:opacity-100'
                               }`}
                             >
-                              <div className="relative w-full h-full rounded-[8px] overflow-hidden">
-                                <Image
-                                  src={image}
-                                  alt={`Thumbnail ${idx + 1}`}
-                                  fill
-                                  className="object-cover"
-                                  sizes="70px"
-                                />
-                                {isLastWithMore && (
-                                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                                    <span className="text-white text-xs font-semibold">
-                                      +{images.length - 5}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
+                              <Image
+                                src={image}
+                                alt={`Thumbnail ${idx + 1}`}
+                                fill
+                                className="object-cover"
+                                sizes="72px"
+                              />
+                              {isLastWithMore && (
+                                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                  <span className="text-white text-xs font-semibold">
+                                    +{images.length - 5}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           );
                         })}
@@ -167,7 +167,7 @@ export default function PropertyDetailPage() {
                     </div>
 
                     {/* Tablet & Desktop: Vertical Thumbnails */}
-                    <div className="hidden sm:flex flex-col gap-3 md:gap-[15px] py-2">
+                    <div className="hidden sm:flex flex-col gap-4 lg:gap-[18px] h-full py-1 px-1">
                       {images.slice(0, 5).map((image, idx) => {
                         if (!image || image.trim() === '') return null;
                         
@@ -184,26 +184,26 @@ export default function PropertyDetailPage() {
                                 setSelectedImage(idx);
                               }
                             }}
-                            className={`relative w-[90px] md:w-[102px] h-[68px] md:h-[75.6px] rounded-[10px] overflow-visible cursor-pointer transition-all flex-shrink-0 bg-gray-100 p-[2px] ${
-                              isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
+                            className={`relative w-[94px] lg:w-[96px] h-[66px] lg:h-[70px] rounded-[8px] overflow-hidden cursor-pointer transition-all flex-shrink-0 ${
+                              isSelected 
+                                ? 'ring-2 ring-[#1f2462] ring-offset-2' 
+                                : 'opacity-70 hover:opacity-100'
                             }`}
                           >
-                            <div className="relative w-full h-full rounded-[8px] overflow-hidden">
-                              <Image
-                                src={image}
-                                alt={`Thumbnail ${idx + 1}`}
-                                fill
-                                className="object-cover"
-                                sizes="102px"
-                              />
-                              {isLastWithMore && (
-                                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                                  <span className="text-white text-sm font-semibold">
-                                    +{images.length - 5}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
+                            <Image
+                              src={image}
+                              alt={`Thumbnail ${idx + 1}`}
+                              fill
+                              className="object-cover"
+                              sizes="96px"
+                            />
+                            {isLastWithMore && (
+                              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                <span className="text-white text-sm font-semibold">
+                                  +{images.length - 5}
+                                </span>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
@@ -213,12 +213,12 @@ export default function PropertyDetailPage() {
               </div>
             </div>
 
-            {/* Right: Property Info - Match image height */}
-            <div className="flex-1 max-w-full lg:max-w-[530px] lg:h-[443px] flex flex-col">
-              <div className="flex flex-col gap-3 md:gap-4 lg:gap-4">
+            {/* Right: Property Info */}
+            <div className="flex-1 w-full lg:max-w-[530px] flex flex-col">
+              <div className="flex flex-col gap-5">
                 {/* Title and Location */}
-                <div>
-                  <h1 className="font-semibold text-xl md:text-2xl lg:text-[26px] leading-[1.3] text-black mb-2">
+                <div className="flex flex-col gap-2">
+                  <h1 className="font-semibold text-xl md:text-2xl lg:text-[26px] leading-[1.3] text-black">
                     {property.title}
                   </h1>
                   <p className="text-sm md:text-base leading-normal text-[#61656e]">
@@ -227,8 +227,8 @@ export default function PropertyDetailPage() {
                 </div>
 
                 {/* Description with Read More */}
-                <div className="flex-1 min-h-0 flex flex-col">
-                  <p className="text-sm md:text-base leading-[1.6] text-[#12161D] mb-1">
+                <div className="flex-1 min-h-0">
+                  <p className="text-sm md:text-base leading-[1.6] text-[#12161D]">
                     {descriptionPreview}
                     {hasMoreDescription && (
                       <>
@@ -287,21 +287,23 @@ export default function PropertyDetailPage() {
                     </div>
                   )}
                 </div>
-              </div>
 
-              <div className="flex flex-col gap-4 mt-auto pt-4">
                 {/* Price */}
-                <p className="font-semibold text-2xl md:text-3xl lg:text-[32px] leading-normal text-black">
-                  AED {formatPrice(property.price)}
-                </p>
+                <div className="mt-auto pt-5">
+                  <p className="font-semibold text-2xl md:text-3xl lg:text-[32px] leading-normal text-black">
+                    AED {formatPrice(property.price)}
+                  </p>
+                </div>
 
                 {/* Enquire Button */}
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-[#1f2462] text-white text-base md:text-lg font-medium px-4 md:px-6 py-3 md:py-4 rounded-[4px] hover:bg-[#1a1f5a] transition-colors"
-                >
-                  Enquire Now
-                </button>
+                <div>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full bg-[#1f2462] text-white text-base md:text-lg font-medium px-4 md:px-6 py-3 md:py-4 rounded-[4px] hover:bg-[#1a1f5a] transition-colors"
+                  >
+                    Enquire Now
+                  </button>
+                </div>
               </div>
             </div>
           </div>
