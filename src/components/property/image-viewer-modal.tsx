@@ -85,41 +85,41 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
       {/* Modal Content */}
       <div className="relative z-10 w-full h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 text-white">
-          <div className="flex-1">
-            <p className="text-lg font-semibold">{propertyTitle}</p>
-            <p className="text-sm text-gray-400">
+        <div className="flex items-center justify-between p-4 md:p-6 text-white">
+          <div className="flex-1 min-w-0 pr-2">
+            <p className="text-base md:text-lg font-semibold truncate">{propertyTitle}</p>
+            <p className="text-xs md:text-sm text-gray-400">
               Image {currentIndex + 1} of {validImages.length}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            className="p-2 hover:bg-white/10 rounded-full transition-colors shrink-0"
             aria-label="Close"
           >
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Main Image */}
-        <div className="flex-1 flex items-center justify-center px-6 pb-6 relative">
+        <div className="flex-1 flex items-center justify-center px-4 md:px-6 pb-4 md:pb-6 relative">
           {/* Previous Button */}
           {validImages.length > 1 && (
             <button
               onClick={handlePrevious}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 md:p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
               aria-label="Previous image"
             >
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
           )}
 
           {/* Image Container */}
-          <div className="relative w-full h-full max-w-6xl max-h-[70vh]">
+          <div className="relative w-full h-full max-w-6xl max-h-[60vh] md:max-h-[70vh]">
             {validImages[currentIndex] && validImages[currentIndex].trim() !== '' ? (
               <Image
                 src={validImages[currentIndex]}
@@ -142,10 +142,10 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
           {validImages.length > 1 && (
             <button
               onClick={handleNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 md:p-3 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-10"
               aria-label="Next image"
             >
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -154,13 +154,13 @@ export default function ImageViewerModal({ isOpen, onClose, images, initialIndex
 
         {/* Thumbnail Strip */}
         {validImages.length > 1 && (
-          <div className="bg-black/50 backdrop-blur-sm p-4">
-            <div className="flex gap-3 overflow-x-auto max-w-6xl mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent p-1">
+          <div className="bg-black/50 backdrop-blur-sm p-2 md:p-4">
+            <div className="flex gap-2 md:gap-3 overflow-x-auto max-w-6xl mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent p-1">
               {validImages.map((image, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
-                  className="relative shrink-0 w-20 h-20 transition-all"
+                  className="relative shrink-0 w-16 h-16 md:w-20 md:h-20 transition-all"
                 >
                   <div className={`relative w-full h-full rounded-lg transition-all ${
                     currentIndex === idx 

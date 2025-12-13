@@ -62,8 +62,8 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-[#e5e5e5] p-6 flex items-start justify-between z-10">
-          <h2 className="text-black text-xl md:text-2xl font-semibold leading-normal">
+        <div className="sticky top-0 bg-white border-b border-[#e5e5e5] p-4 md:p-6 flex items-start justify-between z-10">
+          <h2 className="text-black text-lg md:text-xl lg:text-2xl font-semibold leading-normal">
             Filter Properties
           </h2>
           <button
@@ -71,14 +71,14 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
             className="text-[#61656e] hover:text-black transition-colors shrink-0"
             aria-label="Close modal"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="flex flex-col gap-6">
             {/* Property Type */}
             <div>
@@ -168,7 +168,7 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
             </div>
 
             {/* Price Range */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-black text-sm md:text-base font-medium mb-2">
                   Min Price (AED)

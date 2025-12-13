@@ -89,79 +89,133 @@ export default function PropertyDetailPage() {
       <main className="bg-neutral-50 min-h-screen pt-[120px] pb-0">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-[100px]">
           {/* Main Content */}
-          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-[30px] mb-6 md:mb-8 lg:mb-[30px]">
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-[30px] mb-6 md:mb-8 lg:mb-[30px]">
             {/* Left: Image Gallery */}
-            <div className="flex flex-col sm:flex-row gap-4 md:gap-5 lg:gap-[19px] flex-1">
-              {/* Main Image */}
-              {images[selectedImage] && images[selectedImage].trim() !== '' ? (
-                <div 
-                  className="relative w-full sm:w-[400px] lg:w-[569px] h-[250px] sm:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden cursor-pointer shrink-0 bg-gray-100"
-                  onClick={() => setIsImageViewerOpen(true)}
-                >
-                  <Image
-                    src={images[selectedImage]}
-                    alt={property.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 569px"
-                    priority
-                  />
+            <div className="flex-1 w-full">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 lg:gap-[19px]">
+                {/* Main Image Container */}
+                <div className="w-full sm:w-auto flex-shrink-0">
+                  {images[selectedImage] && images[selectedImage].trim() !== '' ? (
+                    <div 
+                      className="relative w-full sm:w-[400px] lg:w-[569px] aspect-[4/3] sm:aspect-auto sm:h-[300px] md:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden cursor-pointer bg-gray-100"
+                      onClick={() => setIsImageViewerOpen(true)}
+                    >
+                      <Image
+                        src={images[selectedImage]}
+                        alt={property.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 400px, 569px"
+                        priority
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative w-full sm:w-[400px] lg:w-[569px] aspect-[4/3] sm:aspect-auto sm:h-[300px] md:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden bg-gray-200 flex items-center justify-center">
+                      <svg className="w-20 h-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="relative w-full sm:w-[400px] lg:w-[569px] h-[250px] sm:h-[350px] lg:h-[443px] rounded-[10px] overflow-hidden bg-gray-200 flex items-center justify-center shrink-0">
-                  <svg className="w-20 h-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-              )}
 
-              {/* Thumbnails */}
-              {images.length > 0 && (
-                <div className="flex flex-row sm:flex-col gap-3 md:gap-[15px]">
-                  {images.slice(0, 5).map((image, idx) => {
-                    if (!image || image.trim() === '') return null;
-                    
-                    const isSelected = selectedImage === idx;
-                    const isLastWithMore = idx === 4 && images.length > 5 && !isSelected;
-                    
-                    return (
-                      <div
-                        key={idx}
-                        onClick={() => {
-                          if (isLastWithMore) {
-                            setIsImageViewerOpen(true);
-                          } else {
-                            setSelectedImage(idx);
-                          }
-                        }}
-                        className={`relative w-[80px] sm:w-[102px] h-[60px] sm:h-[75.6px] rounded-[10px] overflow-hidden cursor-pointer transition-all shrink-0 bg-gray-100 ${
-                          isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
-                        }`}
-                      >
-                        <Image
-                          src={image}
-                          alt={`Thumbnail ${idx + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="102px"
-                        />
-                        {isLastWithMore && (
-                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                            <span className="text-white text-xs md:text-sm font-semibold">
-                              +{images.length - 5}
-                            </span>
-                          </div>
-                        )}
+                {/* Thumbnails Container */}
+                {images.length > 0 && (
+                  <div className="flex-shrink-0">
+                    {/* Mobile: Horizontal Scrollable Thumbnails */}
+                    <div className="sm:hidden w-full">
+                      <div className="flex flex-row gap-2 overflow-x-auto scrollbar-hide py-2 pb-2 -mx-4 px-6">
+                        {images.slice(0, 5).map((image, idx) => {
+                          if (!image || image.trim() === '') return null;
+                          
+                          const isSelected = selectedImage === idx;
+                          const isLastWithMore = idx === 4 && images.length > 5 && !isSelected;
+                          
+                          return (
+                            <div
+                              key={idx}
+                              onClick={() => {
+                                if (isLastWithMore) {
+                                  setIsImageViewerOpen(true);
+                                } else {
+                                  setSelectedImage(idx);
+                                }
+                              }}
+                              className={`relative w-[70px] h-[52px] rounded-[10px] overflow-hidden cursor-pointer transition-all flex-shrink-0 bg-gray-100 p-[2px] ${
+                                isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
+                              }`}
+                            >
+                              <div className="relative w-full h-full rounded-[8px] overflow-hidden">
+                                <Image
+                                  src={image}
+                                  alt={`Thumbnail ${idx + 1}`}
+                                  fill
+                                  className="object-cover"
+                                  sizes="70px"
+                                />
+                                {isLastWithMore && (
+                                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                    <span className="text-white text-xs font-semibold">
+                                      +{images.length - 5}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
-                </div>
-              )}
+                    </div>
+
+                    {/* Tablet & Desktop: Vertical Thumbnails */}
+                    <div className="hidden sm:flex flex-col gap-3 md:gap-[15px] py-2">
+                      {images.slice(0, 5).map((image, idx) => {
+                        if (!image || image.trim() === '') return null;
+                        
+                        const isSelected = selectedImage === idx;
+                        const isLastWithMore = idx === 4 && images.length > 5 && !isSelected;
+                        
+                        return (
+                          <div
+                            key={idx}
+                            onClick={() => {
+                              if (isLastWithMore) {
+                                setIsImageViewerOpen(true);
+                              } else {
+                                setSelectedImage(idx);
+                              }
+                            }}
+                            className={`relative w-[90px] md:w-[102px] h-[68px] md:h-[75.6px] rounded-[10px] overflow-visible cursor-pointer transition-all flex-shrink-0 bg-gray-100 p-[2px] ${
+                              isSelected ? 'ring-2 ring-[#1f2462]' : 'opacity-70 hover:opacity-100'
+                            }`}
+                          >
+                            <div className="relative w-full h-full rounded-[8px] overflow-hidden">
+                              <Image
+                                src={image}
+                                alt={`Thumbnail ${idx + 1}`}
+                                fill
+                                className="object-cover"
+                                sizes="102px"
+                              />
+                              {isLastWithMore && (
+                                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                  <span className="text-white text-sm font-semibold">
+                                    +{images.length - 5}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Right: Property Info - Match image height */}
             <div className="flex-1 max-w-full lg:max-w-[530px] lg:h-[443px] flex flex-col">
-              <div className="flex flex-col gap-3 md:gap-4">
+              <div className="flex flex-col gap-3 md:gap-4 lg:gap-4">
                 {/* Title and Location */}
                 <div>
                   <h1 className="font-semibold text-xl md:text-2xl lg:text-[26px] leading-[1.3] text-black mb-2">
@@ -253,36 +307,36 @@ export default function PropertyDetailPage() {
           </div>
 
           {/* Property Details Grid */}
-          <div className="bg-white border border-[#dddddd] rounded-[8px] p-4 md:p-6 mb-6 md:mb-8 lg:mb-[30px]">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="bg-white border border-[#dddddd] rounded-[8px] p-4 md:p-5 lg:p-6 mb-6 md:mb-8 lg:mb-[30px]">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
               {/* Developer Name - only show if exists and not empty */}
               {property.developer && typeof property.developer === 'string' && property.developer.trim() !== '' && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Developer Name</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.developer}</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Developer Name</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.developer}</span>
                 </div>
               )}
               
               {/* Area - only show if exists and greater than 0 */}
               {property.area !== undefined && property.area !== null && property.area > 0 && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Area</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.area} sq. ft</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Area</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.area} sq. ft</span>
                 </div>
               )}
               
               {/* Amenities - only show if exists and has items */}
               {property.amenities && property.amenities.length > 0 && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Amenities</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Amenities</span>
                   <div className="flex flex-col gap-1">
-                    <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">
+                    <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">
                       {property.amenities.slice(0, 2).join(', ')}
                     </span>
                     {property.amenities.length > 2 && (
                       <button
                         onClick={() => setIsAmenitiesModalOpen(true)}
-                        className="text-[#1f2462] text-xs md:text-[14px] hover:underline text-left"
+                        className="text-[#1f2462] text-xs md:text-sm hover:underline text-left"
                       >
                         +{property.amenities.length - 2} more
                       </button>
@@ -294,16 +348,16 @@ export default function PropertyDetailPage() {
               {/* Bathrooms - only show if exists and greater than 0 */}
               {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Bathrooms</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.bathrooms}</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Bathrooms</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.bathrooms}</span>
                 </div>
               )}
               
               {/* Delivery Date - only show if exists and not empty */}
               {property.readyDate && typeof property.readyDate === 'string' && property.readyDate.trim() !== '' && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Delivery Date</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.readyDate}</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Delivery Date</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.readyDate}</span>
                 </div>
               )}
               
@@ -312,16 +366,16 @@ export default function PropertyDetailPage() {
                ((typeof property.floors === 'number' && property.floors > 0) || 
                 (typeof property.floors === 'string' && property.floors !== '0' && property.floors.trim() !== '' && property.floors.trim() !== 'null' && property.floors.trim() !== 'undefined')) && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Floors</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.floors}</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Floors</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.floors}</span>
                 </div>
               )}
               
               {/* Security - only show if exists */}
               {property.security !== undefined && property.security !== null && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Security</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Security</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">
                     {typeof property.security === 'boolean' 
                       ? (property.security ? 'Yes' : 'No')
                       : (typeof property.security === 'string' 
@@ -334,16 +388,16 @@ export default function PropertyDetailPage() {
               {/* Furnished - only show if exists and not empty */}
               {property.furnished && typeof property.furnished === 'string' && property.furnished.trim() !== '' && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Furnished</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.furnished}</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Furnished</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.furnished}</span>
                 </div>
               )}
               
               {/* Payment Plan - only show if exists and not empty */}
               {property.paymentPlan && typeof property.paymentPlan === 'string' && property.paymentPlan.trim() !== '' && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Payment Plan</span>
-                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.paymentPlan}</span>
+                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Payment Plan</span>
+                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.paymentPlan}</span>
                 </div>
               )}
             </div>
@@ -352,10 +406,10 @@ export default function PropertyDetailPage() {
           {/* Related Properties */}
           {relatedProperties.length > 0 && (
             <div className="mb-6 md:mb-8 lg:mb-[30px]">
-              <h2 className="font-medium text-2xl md:text-3xl lg:text-[32px] leading-normal text-black mb-4 md:mb-6 lg:mb-[30px]">
+              <h2 className="font-medium text-xl md:text-2xl lg:text-[32px] leading-normal text-black mb-4 md:mb-6 lg:mb-[30px]">
                 Other Properties
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-[30px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-[30px]">
                 {relatedProperties.map((relatedProperty) => (
                   <PropertyCard key={relatedProperty.id} property={relatedProperty} />
                 ))}

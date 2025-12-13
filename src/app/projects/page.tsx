@@ -91,7 +91,7 @@ export default function ProjectsPage() {
                 placeholder="Search for a Property by Name"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 outline-none text-[18px] font-medium text-[#5c5c5c] placeholder:text-[#5c5c5c] bg-transparent"
+                className="flex-1 outline-none text-base md:text-[18px] font-medium text-[#5c5c5c] placeholder:text-[#5c5c5c] bg-transparent"
               />
             </div>
 
@@ -100,7 +100,7 @@ export default function ProjectsPage() {
               onClick={() => setIsFilterOpen(true)}
               className="bg-[#1f2462] flex gap-[10px] items-center justify-center px-[15px] py-[10px] rounded-[8px] w-full sm:w-[112px] h-[47px] hover:bg-[#1a1f5a] transition-colors"
             >
-              <span className="font-medium text-[18px] leading-normal text-white">Filter</span>
+              <span className="font-medium text-base md:text-[18px] leading-normal text-white">Filter</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 6H16M6 10H14M8 14H12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
               </svg>

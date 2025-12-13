@@ -31,15 +31,15 @@ const Footer = () => {
         </div>
         
         {/* Bottom Section */}
-        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 mt-12 md:mt-16 lg:mt-24">
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-6 md:gap-8 mt-8 md:mt-12 lg:mt-24">
           {/* Social Media Icons */}
-          <div className="flex flex-col gap-5 items-center lg:items-start">
-            <div className="flex gap-5">
+          <div className="flex flex-col gap-4 md:gap-5 items-center lg:items-start">
+            <div className="flex gap-4 md:gap-5">
               <a href="#" className="hover:opacity-70 transition-opacity">
                 <Image src="/okru.svg" alt="OK.ru" width={12} height={18} />
               </a>
             </div>
-            <div className="flex gap-5">
+            <div className="flex gap-4 md:gap-5">
               <a href="#" className="hover:opacity-70 transition-opacity">
                 <Image src="/vk.svg" alt="VK" width={18} height={11} />
               </a>
@@ -47,7 +47,7 @@ const Footer = () => {
                 <Image src="/facebook.svg" alt="Facebook" width={16} height={16} />
               </a>
             </div>
-            <div className="flex gap-5">
+            <div className="flex gap-4 md:gap-5">
               <a href="#" className="hover:opacity-70 transition-opacity">
                 <Image src="/telegram.svg" alt="Telegram" width={17} height={14} />
               </a>
@@ -58,28 +58,28 @@ const Footer = () => {
           </div>
           
           {/* Copyright */}
-          <div className="text-xs text-[#666] leading-relaxed text-center">
+          <div className="text-xs md:text-sm text-[#666] leading-relaxed text-center">
             <p>© {new Date().getFullYear()} — Copyright</p>
             <p>All Rights reserved</p>
           </div>
           
           {/* Contact and Location */}
-          <div className="flex flex-col gap-4 text-center lg:text-left">
+          <div className="flex flex-col gap-3 md:gap-4 text-center lg:text-left">
             {/* Contact Info */}
-            <div className="text-sm text-[#484848] leading-relaxed">
+            <div className="text-xs md:text-sm text-[#484848] leading-relaxed">
               <p>+1 (999) 888-77-66</p>
               <p>hello@logoipsum.com</p>
             </div>
             
             {/* Location */}
-            <div className="text-sm text-[#484848] leading-relaxed">
+            <div className="text-xs md:text-sm text-[#484848] leading-relaxed">
               <p>483920, Moscow,</p>
               <p>Myasnitskaya 22/2/5, Office 4</p>
             </div>
           </div>
           
           {/* Languages */}
-          <div className="flex gap-4 text-sm text-[#666] justify-center lg:justify-start">
+          <div className="flex gap-3 md:gap-4 text-xs md:text-sm text-[#666] justify-center lg:justify-start">
             <span className="hover:text-[#00473c] transition-colors cursor-pointer">Es</span>
             <span className="hover:text-[#00473c] transition-colors cursor-pointer">Fr</span>
             <span className="hover:text-[#00473c] transition-colors cursor-pointer">De</span>

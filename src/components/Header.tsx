@@ -104,7 +104,7 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <nav className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg py-4 px-6 flex flex-col gap-4 lg:hidden">
+        <nav className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg py-4 px-6 flex flex-col gap-4 lg:hidden z-50">
           <Link 
             href="/" 
             className={`tracking-[0.28px] py-2 transition-colors ${
