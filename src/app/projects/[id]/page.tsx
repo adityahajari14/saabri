@@ -164,7 +164,7 @@ export default function PropertyDetailPage() {
 
             {/* Right: Property Info - Match image height */}
             <div className="flex-1 max-w-full lg:max-w-[530px] lg:h-[443px] flex flex-col">
-              <div className="flex flex-col gap-3 md:gap-4 flex-1">
+              <div className="flex flex-col gap-3 md:gap-4">
                 {/* Title and Location */}
                 <div>
                   <h1 className="font-semibold text-xl md:text-2xl lg:text-[26px] leading-[1.3] text-black mb-2">
@@ -195,40 +195,46 @@ export default function PropertyDetailPage() {
 
                 {/* Badges */}
                 <div className="flex flex-wrap gap-2 md:gap-2.5">
-                  <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-3 md:px-3.5 py-1.5 md:py-2 rounded-[28px]">
-                    <div className="w-5 h-5 md:w-5 md:h-5 flex items-center justify-center shrink-0">
-                      <svg width="18" height="14" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="1" y="7.078" width="18" height="12" rx="2" stroke="black" strokeWidth="2"/>
-                        <path d="M7 7.078V5.078C7 3.97343 7.89543 3.078 9 3.078H13C14.1046 3.078 15 3.97343 15 5.078V7.078" stroke="black" strokeWidth="2"/>
-                      </svg>
+                  {property.bedrooms && property.bedrooms > 0 && (
+                    <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-2.5 md:px-3 py-1.5 md:py-2 rounded-[28px]">
+                      <div className="w-4.5 h-4.5 md:w-5 md:h-5 flex items-center justify-center shrink-0">
+                        <svg width="16" height="12" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="1" y="7.078" width="18" height="12" rx="2" stroke="black" strokeWidth="2"/>
+                          <path d="M7 7.078V5.078C7 3.97343 7.89543 3.078 9 3.078H13C14.1046 3.078 15 3.97343 15 5.078V7.078" stroke="black" strokeWidth="2"/>
+                        </svg>
+                      </div>
+                      <span className="font-medium text-xs md:text-sm leading-normal text-black whitespace-nowrap">
+                        {property.bedrooms}-bedroom
+                      </span>
                     </div>
-                    <span className="font-medium text-sm md:text-base leading-normal text-black whitespace-nowrap">
-                      {property.bedrooms}-Bedroom
-                    </span>
-                  </div>
+                  )}
 
-                  <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-3 md:px-3.5 py-1.5 md:py-2 rounded-[28px]">
-                    <div className="w-5 h-5 md:w-5 md:h-5 flex items-center justify-center shrink-0">
-                      <svg width="17" height="17" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="1" y="3.078" width="16" height="16" rx="2" stroke="black" strokeWidth="2"/>
-                        <circle cx="10.5" cy="9.078" r="2" stroke="black" strokeWidth="2"/>
-                      </svg>
+                  {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
+                    <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-2.5 md:px-3 py-1.5 md:py-2 rounded-[28px]">
+                      <div className="w-4.5 h-4.5 md:w-5 md:h-5 flex items-center justify-center shrink-0">
+                        <svg width="15" height="15" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="1" y="3.078" width="16" height="16" rx="2" stroke="black" strokeWidth="2"/>
+                          <circle cx="10.5" cy="9.078" r="2" stroke="black" strokeWidth="2"/>
+                        </svg>
+                      </div>
+                      <span className="font-medium text-xs md:text-sm leading-normal text-black whitespace-nowrap">
+                        {property.bathrooms}-bathroom
+                      </span>
                     </div>
-                    <span className="font-medium text-sm md:text-base leading-normal text-black whitespace-nowrap">
-                      {property.bathrooms}-Bathroom
-                    </span>
-                  </div>
+                  )}
 
-                  <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-3 md:px-3.5 py-1.5 md:py-2 rounded-[28px]">
-                    <div className="w-5 h-5 md:w-5 md:h-5 flex items-center justify-center shrink-0">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="black" strokeWidth="2"/>
-                      </svg>
+                  {property.type && typeof property.type === 'string' && property.type.trim() !== '' && (
+                    <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-2.5 md:px-3 py-1.5 md:py-2 rounded-[28px]">
+                      <div className="w-4.5 h-4.5 md:w-5 md:h-5 flex items-center justify-center shrink-0">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="black" strokeWidth="2"/>
+                        </svg>
+                      </div>
+                      <span className="font-medium text-xs md:text-sm leading-normal text-black whitespace-nowrap">
+                        {property.type}
+                      </span>
                     </div>
-                    <span className="font-medium text-sm md:text-base leading-normal text-black whitespace-nowrap">
-                      {property.type}
-                    </span>
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -252,18 +258,23 @@ export default function PropertyDetailPage() {
           {/* Property Details Grid */}
           <div className="bg-white border border-[#dddddd] rounded-[8px] p-4 md:p-6 mb-6 md:mb-8 lg:mb-[30px]">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {property.developer && (
+              {/* Developer Name - only show if exists and not empty */}
+              {property.developer && typeof property.developer === 'string' && property.developer.trim() !== '' && (
                 <div className="flex flex-col gap-1">
                   <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Developer Name</span>
                   <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.developer}</span>
                 </div>
               )}
-              {property.area && (
+              
+              {/* Area - only show if exists and greater than 0 */}
+              {property.area !== undefined && property.area !== null && property.area > 0 && (
                 <div className="flex flex-col gap-1">
                   <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Area</span>
                   <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.area} sq. ft</span>
                 </div>
               )}
+              
+              {/* Amenities - only show if exists and has items */}
               {property.amenities && property.amenities.length > 0 && (
                 <div className="flex flex-col gap-1">
                   <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Amenities</span>
@@ -282,26 +293,62 @@ export default function PropertyDetailPage() {
                   </div>
                 </div>
               )}
-              {property.bathrooms && (
+              
+              {/* Bathrooms - only show if exists and greater than 0 */}
+              {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
                 <div className="flex flex-col gap-1">
                   <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Bathrooms</span>
                   <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.bathrooms}</span>
                 </div>
               )}
-              {property.readyDate && (
+              
+              {/* Delivery Date - only show if exists and not empty */}
+              {property.readyDate && typeof property.readyDate === 'string' && property.readyDate.trim() !== '' && (
                 <div className="flex flex-col gap-1">
                   <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Delivery Date</span>
                   <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.readyDate}</span>
                 </div>
               )}
-              <div className="flex flex-col gap-1">
-                <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Floors</span>
-                <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">2</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Security</span>
-                <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">Yes</span>
-              </div>
+              
+              {/* Floors - only show if exists and greater than 0 */}
+              {property.floors !== undefined && property.floors !== null && 
+               ((typeof property.floors === 'number' && property.floors > 0) || 
+                (typeof property.floors === 'string' && property.floors !== '0' && property.floors.trim() !== '' && property.floors.trim() !== 'null' && property.floors.trim() !== 'undefined')) && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Floors</span>
+                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.floors}</span>
+                </div>
+              )}
+              
+              {/* Security - only show if exists */}
+              {property.security !== undefined && property.security !== null && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Security</span>
+                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">
+                    {typeof property.security === 'boolean' 
+                      ? (property.security ? 'Yes' : 'No')
+                      : (typeof property.security === 'string' 
+                          ? (property.security.toLowerCase() === 'true' || property.security.toLowerCase() === 'yes' || property.security === '1' ? 'Yes' : property.security)
+                          : 'Yes')}
+                  </span>
+                </div>
+              )}
+              
+              {/* Furnished - only show if exists and not empty */}
+              {property.furnished && typeof property.furnished === 'string' && property.furnished.trim() !== '' && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Furnished</span>
+                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.furnished}</span>
+                </div>
+              )}
+              
+              {/* Payment Plan - only show if exists and not empty */}
+              {property.paymentPlan && typeof property.paymentPlan === 'string' && property.paymentPlan.trim() !== '' && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[#61656e] text-sm md:text-[16px] font-medium leading-[27px]">Payment Plan</span>
+                  <span className="text-black text-base md:text-[18px] font-medium leading-[27px]">{property.paymentPlan}</span>
+                </div>
+              )}
             </div>
           </div>
 

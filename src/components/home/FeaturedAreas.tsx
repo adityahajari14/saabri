@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -30,6 +30,75 @@ const featuredAreas = [
     image: '/home/featured-areas/dubai-south.webp',
   }
 ];
+
+interface AreaCardProps {
+  area: {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+  };
+  index: number;
+}
+
+function AnimatedAreaCard({ area, index }: AreaCardProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <Link
+      ref={cardRef}
+      href="#"
+      className={`relative h-[350px] md:h-[400px] lg:h-[501px] w-[280px] md:w-[320px] lg:w-[353px] shrink-0 rounded-[16px] overflow-hidden group transition-all duration-700 ease-out hover:scale-[1.02] ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
+      {/* Image */}
+      <Image
+        src={area.image}
+        alt={area.name}
+        fill
+        className="object-cover object-center group-hover:scale-110 transition-transform duration-500 ease-out"
+        sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 353px"
+      />
+      
+      {/* Gradient Overlay */}
+      <div className="absolute bottom-0 left-0 w-full h-[120px] md:h-[180px] lg:h-[239px] bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#000000] backdrop-blur-[0.5px] group-hover:opacity-90 transition-opacity duration-300">
+        {/* Text Content */}
+        <div className="absolute left-4 md:left-6 lg:left-[25px] bottom-3 md:bottom-4 lg:bottom-[14px] text-white">
+          <h3 className="font-medium text-lg md:text-xl lg:text-2xl leading-normal font-noto-sans mb-1 group-hover:translate-y-[-2px] transition-transform duration-300">
+            {area.name}
+          </h3>
+          <p className="font-light text-sm md:text-base leading-[1.538] font-poppins">
+            {area.description}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function FeaturedAreas() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -79,34 +148,8 @@ export default function FeaturedAreas() {
         
         {/* Cards Horizontal Scroll - Left padding, right spacer for gap */}
         <div ref={scrollRef} className="flex gap-4 md:gap-6 lg:gap-[24px] items-start w-full overflow-x-auto scrollbar-hide pl-4 md:pl-8 lg:pl-[80px]">
-          {featuredAreas.map((area) => (
-            <Link
-              key={area.id}
-              href="#"
-              className="relative h-[350px] md:h-[400px] lg:h-[501px] w-[280px] md:w-[320px] lg:w-[353px] shrink-0 rounded-[16px] overflow-hidden group"
-            >
-              {/* Image */}
-              <Image
-                src={area.image}
-                alt={area.name}
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 353px"
-              />
-              
-              {/* Gradient Overlay */}
-              <div className="absolute bottom-0 left-0 w-full h-[120px] md:h-[180px] lg:h-[239px] bg-gradient-to-b from-[rgba(0,0,0,0)] to-[#000000] backdrop-blur-[0.5px]">
-                {/* Text Content */}
-                <div className="absolute left-4 md:left-6 lg:left-[25px] bottom-3 md:bottom-4 lg:bottom-[14px] text-white">
-                  <h3 className="font-medium text-lg md:text-xl lg:text-2xl leading-normal font-noto-sans mb-1">
-                    {area.name}
-                  </h3>
-                  <p className="font-light text-sm md:text-base leading-[1.538] font-poppins">
-                    {area.description}
-                  </p>
-                </div>
-              </div>
-            </Link>
+          {featuredAreas.map((area, index) => (
+            <AnimatedAreaCard key={area.id} area={area} index={index} />
           ))}
           {/* Right spacer to match left padding */}
           <div className="shrink-0 w-4 md:w-8 lg:w-[80px] h-px" aria-hidden="true" />

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 
 const testimonials = [
@@ -72,10 +72,39 @@ export default function Testimonials() {
 
         {/* Testimonials Horizontal Scroll - Left padding, right spacer for gap */}
         <div ref={scrollRef} className="flex gap-4 md:gap-6 lg:gap-10 items-start w-full overflow-x-auto scrollbar-hide pl-4 md:pl-8 lg:pl-[80px]">
-          {testimonials.map((testimonial) => (
+          {testimonials.map((testimonial, index) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const cardRef = useRef<HTMLDivElement>(null);
+
+            useEffect(() => {
+              const observer = new IntersectionObserver(
+                ([entry]) => {
+                  if (entry.isIntersecting) {
+                    setIsVisible(true);
+                  }
+                },
+                { threshold: 0.1 }
+              );
+
+              if (cardRef.current) {
+                observer.observe(cardRef.current);
+              }
+
+              return () => {
+                if (cardRef.current) {
+                  observer.unobserve(cardRef.current);
+                }
+              };
+            }, []);
+
+            return (
             <div
               key={testimonial.id}
-              className="flex flex-col gap-4 md:gap-6 lg:gap-8 h-[400px] md:h-[420px] lg:h-[450px] w-[320px] md:w-[400px] lg:w-[500px] shrink-0 rounded-[16px]"
+              ref={cardRef}
+              className={`flex flex-col gap-4 md:gap-6 lg:gap-8 h-[400px] md:h-[420px] lg:h-[450px] w-[320px] md:w-[400px] lg:w-[500px] shrink-0 rounded-[16px] transition-all duration-700 ease-out hover:scale-[1.02] ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
               {/* Image Container */}
               <div className="relative w-full h-[280px] md:h-[300px] lg:h-[350px] rounded-[16px] overflow-hidden">
@@ -99,7 +128,8 @@ export default function Testimonials() {
                 {testimonial.text}
               </p>
             </div>
-          ))}
+            );
+          })}
           {/* Right spacer to match left padding */}
           <div className="shrink-0 w-4 md:w-8 lg:w-[80px] h-px" aria-hidden="true" />
         </div>

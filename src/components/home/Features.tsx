@@ -126,20 +126,37 @@ function useIntersectionObserver(
 export default function Features() {
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef, 0.2);
+  const [contentVisible, setContentVisible] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => setContentVisible(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
 
   return (
     <section ref={sectionRef} className="bg-white p-6 md:p-12 lg:p-[80px]">
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-[3px] items-start">
           {/* Left Section - Title */}
-          <h2 className="font-medium text-[#12161D] font-noto-sans text-3xl md:text-4xl lg:text-[44px] leading-[1.2] md:leading-[52px] w-full lg:w-[520px] shrink-0">
+          <h2 
+            className={`font-medium text-[#12161D] font-noto-sans text-3xl md:text-4xl lg:text-[44px] leading-[1.2] md:leading-[52px] w-full lg:w-[520px] shrink-0 transition-all duration-700 ease-out ${
+              contentVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            }`}
+          >
             Enjoy Quality Life in Perumnas Housing
           </h2>
 
           {/* Right Section */}
           <div className="flex flex-col gap-8 md:gap-12 lg:gap-[80px] grow items-start w-full lg:w-auto">
             {/* Paragraph */}
-            <p className="font-normal text-[#61656E] font-poppins text-base md:text-lg lg:text-[20px] leading-[1.36] w-full">
+            <p 
+              className={`font-normal text-[#61656E] font-poppins text-base md:text-lg lg:text-[20px] leading-[1.36] w-full transition-all duration-700 ease-out ${
+                contentVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              }`}
+              style={{ transitionDelay: '200ms' }}
+            >
               Sabri is the right choice for those of you who are looking for comfortable, safe and affordable housing. With the cluster concept, you can enjoy the privacy and comfort of living in a beautiful and clean environment. Apart from that, you can also enjoy the various facilities provided, such as playgrounds, sports fields, shopping centers, schools, and others.
             </p>
 

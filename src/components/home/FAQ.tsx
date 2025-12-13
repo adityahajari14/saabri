@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 const faqs = [
   {
     id: 1,
@@ -26,11 +30,39 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="bg-neutral-50 p-6 md:p-12 lg:p-[80px]">
+    <section ref={sectionRef} className="bg-neutral-50 p-6 md:p-12 lg:p-[80px]">
       <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-start justify-center max-w-[1280px] mx-auto">
         {/* Left Column - Title */}
-        <div className="flex flex-col gap-4 md:gap-6 w-full lg:w-[550px] shrink-0">
+        <div 
+          className={`flex flex-col gap-4 md:gap-6 w-full lg:w-[550px] shrink-0 transition-all duration-700 ease-out ${
+            isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+          }`}
+        >
           <h2 className="font-medium text-[#12161D] font-noto-sans text-2xl md:text-3xl lg:text-5xl leading-[1.2] md:leading-[52px]">
             Frequently Asked Questions
           </h2>
@@ -41,11 +73,14 @@ export default function FAQ() {
 
         {/* Right Column - FAQ Items */}
         <div className="flex flex-col gap-4 md:gap-5 grow min-w-0 w-full lg:w-auto">
-          {faqs.map((faq) => (
+          {faqs.map((faq, index) => (
             <details
               key={faq.id}
               open={faq.isOpen}
-              className="bg-white border border-[#e5e5e6] rounded-lg p-4 md:p-6 group"
+              className={`bg-white border border-[#e5e5e6] rounded-lg p-4 md:p-6 group transition-all duration-700 ease-out hover:shadow-md hover:border-[#12161D] ${
+                isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               <summary className="flex items-center justify-between w-full cursor-pointer gap-3">
                 <p className="font-medium text-[#12161D] text-lg md:text-xl leading-[1.4] md:leading-[28px] font-noto-sans grow">

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -30,12 +33,40 @@ const blogs = {
 };
 
 export default function Blogs() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="bg-white p-6 md:p-12 lg:p-[80px]">
+    <section ref={sectionRef} className="bg-white p-6 md:p-12 lg:p-[80px]">
       <div className="flex flex-col gap-8 md:gap-12 lg:gap-[55px] items-start">
         {/* Header */}
         <div className="w-full">
-          <h2 className="font-medium text-[#12161D] font-noto-sans text-2xl md:text-3xl lg:text-5xl leading-[1.2] md:leading-[52px]">
+          <h2 
+            className={`font-medium text-[#12161D] font-noto-sans text-2xl md:text-3xl lg:text-5xl leading-[1.2] md:leading-[52px] transition-all duration-700 ease-out ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
             Always check our latest blog
           </h2>
         </div>
@@ -43,14 +74,19 @@ export default function Blogs() {
         {/* Content Container */}
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-[30px] items-start w-full">
           {/* Left Content - Featured Blog */}
-          <div className="flex flex-col gap-4 md:gap-6 lg:gap-[24px] w-full lg:h-[496px] lg:w-[626px] shrink-0">
+          <div 
+            className={`flex flex-col gap-4 md:gap-6 lg:gap-[24px] w-full lg:h-[496px] lg:w-[626px] shrink-0 transition-all duration-700 ease-out ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            }`}
+            style={{ transitionDelay: '200ms' }}
+          >
             {/* Image with Author Overlay */}
-            <div className="relative w-full h-[250px] md:h-[300px] lg:h-[400px] rounded-[16px] overflow-hidden">
+            <div className="relative w-full h-[250px] md:h-[300px] lg:h-[400px] rounded-[16px] overflow-hidden group">
               <Image
                 src={blogs.featured.image}
                 alt={blogs.featured.title}
                 fill
-                className="object-cover object-center"
+                className="object-cover object-center group-hover:scale-110 transition-transform duration-500 ease-out"
               />
               
               {/* Author Info Overlay */}
@@ -86,11 +122,16 @@ export default function Blogs() {
           </div>
 
           {/* Right Content - Two Blog Posts */}
-          <div className="flex flex-col gap-4 md:gap-6 lg:gap-[24px] w-full lg:w-[626px] shrink-0">
+          <div 
+            className={`flex flex-col gap-4 md:gap-6 lg:gap-[24px] w-full lg:w-[626px] shrink-0 transition-all duration-700 ease-out ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            }`}
+            style={{ transitionDelay: '400ms' }}
+          >
             {/* First Blog Post */}
             <Link
               href="#"
-              className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-[24px] items-start md:items-center w-full"
+              className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-[24px] items-start md:items-center w-full group hover:scale-[1.02] transition-transform duration-300"
             >
               {/* Text Content */}
               <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 grow min-w-0 w-full md:w-auto order-2 md:order-1">
@@ -108,7 +149,7 @@ export default function Blogs() {
                   src={blogs.right[0].image}
                   alt={blogs.right[0].title}
                   fill
-                  className="object-cover object-center"
+                  className="object-cover object-center group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
               </div>
             </Link>
@@ -116,7 +157,7 @@ export default function Blogs() {
             {/* Second Blog Post */}
             <Link
               href="#"
-              className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-[24px] items-start md:items-center w-full"
+              className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-[24px] items-start md:items-center w-full group hover:scale-[1.02] transition-transform duration-300"
             >
               {/* Text Content */}
               <div className="flex flex-col gap-4 md:gap-6 grow min-w-0 w-full md:w-auto order-2 md:order-1">
@@ -134,7 +175,7 @@ export default function Blogs() {
                   src={blogs.right[1].image}
                   alt={blogs.right[1].title}
                   fill
-                  className="object-cover object-center"
+                  className="object-cover object-center group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
               </div>
             </Link>

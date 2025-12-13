@@ -1,16 +1,46 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 export default function Hero() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
-    <section className="relative bg-[url('/home/hero-bg.webp')] bg-cover bg-center w-full min-h-screen flex items-center justify-center p-4 md:p-6">
+    <section 
+      ref={sectionRef}
+      className="relative bg-[url('/home/hero-bg.webp')] bg-cover bg-center w-full min-h-screen flex items-center justify-center p-4 md:p-6"
+    >
       <div className="absolute inset-0 bg-[rgba(0,0,0,0.44)]" />
       <div className="relative z-10 flex flex-col items-center justify-center gap-4 md:gap-6 max-w-3xl text-center px-4">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-normal text-white font-noto-sans">More Comfortable, More Classy</h1>
-        <p className="text-base md:text-lg font-light text-white font-poppins leading-[150%]">
+        <h1 
+          className={`text-3xl md:text-4xl lg:text-5xl font-normal text-white font-noto-sans transition-all duration-1000 ease-out ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+          style={{ transitionDelay: '200ms' }}
+        >
+          More Comfortable, More Classy
+        </h1>
+        <p 
+          className={`text-base md:text-lg font-light text-white font-poppins leading-[150%] transition-all duration-1000 ease-out ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+          style={{ transitionDelay: '400ms' }}
+        >
         We don't just sell properties, we build futures, create financial freedom, and protect your legacy through real estate, the world's most reliable investment.
         </p>
-        <button className="bg-[#1A1F56] text-white px-5 py-3 font-poppins font-normal text-sm leading-[150%] rounded hover:opacity-90 transition-opacity">
-          <Link href="/properties">
+        <button 
+          className={`bg-[#1A1F56] text-white px-5 py-3 font-poppins font-normal text-sm leading-[150%] rounded hover:opacity-90 transition-all duration-1000 ease-out hover:scale-105 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+          style={{ transitionDelay: '600ms' }}
+        >
+          <Link href="/projects">
             Browse Properties
           </Link>
         </button>

@@ -6,10 +6,12 @@ interface Property {
   id?: string | number;
   title: string;
   price: number;
-  bedrooms: number | string;
-  bathrooms: number;
+  bedrooms?: number;
+  bathrooms?: number;
   type: string;
   mainImage: string;
+  area?: number;
+  location?: string;
 }
 
 interface PropertyCardProps {
@@ -61,40 +63,32 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
           {/* Badges */}
           <div className="flex flex-wrap gap-2">
-            <div className="bg-[#e5e7ff] flex gap-1 items-center px-3 py-1.5 rounded-[28px]">
-              <div className="w-5 h-5 flex items-center justify-center">
-                <svg width="18" height="14" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="1" y="7.078" width="18" height="12" rx="2" stroke="black" strokeWidth="2"/>
-                  <path d="M7 7.078V5.078C7 3.97343 7.89543 3.078 9 3.078H13C14.1046 3.078 15 3.97343 15 5.078V7.078" stroke="black" strokeWidth="2"/>
-                </svg>
+            {bedrooms && bedrooms > 0 && (
+              <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-2.5 py-1.5 rounded-[28px]">
+                <div className="w-4.5 h-4.5 flex items-center justify-center">
+                  <svg width="16" height="12" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="7.078" width="18" height="12" rx="2" stroke="black" strokeWidth="2"/>
+                    <path d="M7 7.078V5.078C7 3.97343 7.89543 3.078 9 3.078H13C14.1046 3.078 15 3.97343 15 5.078V7.078" stroke="black" strokeWidth="2"/>
+                  </svg>
+                </div>
+                <span className="font-medium text-xs leading-normal text-black">
+                  {bedrooms}-bedroom
+                </span>
               </div>
-              <span className="font-medium text-sm md:text-base leading-normal text-black">
-                {bedrooms}-Bedroom
-              </span>
-            </div>
+            )}
 
-            <div className="bg-[#e5e7ff] flex gap-1 items-center px-3 py-1.5 rounded-[28px]">
-              <div className="w-5 h-5 flex items-center justify-center">
-                <svg width="17" height="17" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="1" y="3.078" width="16" height="16" rx="2" stroke="black" strokeWidth="2"/>
-                  <circle cx="10.5" cy="9.078" r="2" stroke="black" strokeWidth="2"/>
-                </svg>
+            {type && typeof type === 'string' && type.trim() !== '' && (
+              <div className="bg-[#e5e7ff] flex gap-1.5 items-center px-2.5 py-1.5 rounded-[28px]">
+                <div className="w-4.5 h-4.5 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="black" strokeWidth="2"/>
+                  </svg>
+                </div>
+                <span className="font-medium text-xs leading-normal text-black">
+                  {type}
+                </span>
               </div>
-              <span className="font-medium text-sm md:text-base leading-normal text-black">
-                {bathrooms}-Bathroom
-              </span>
-            </div>
-
-            <div className="bg-[#e5e7ff] flex gap-1 items-center px-3 py-1.5 rounded-[28px]">
-              <div className="w-5 h-5 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="black" strokeWidth="2"/>
-                </svg>
-              </div>
-              <span className="font-medium text-sm md:text-base leading-normal text-black">
-                {type}
-              </span>
-            </div>
+            )}
           </div>
 
           {/* Price */}

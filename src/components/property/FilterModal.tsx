@@ -93,7 +93,11 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
                 <option value="">All Types</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Villa">Villa</option>
+                <option value="Townhouse">Townhouse</option>
+                <option value="Studio">Studio</option>
+                <option value="Penthouse">Penthouse</option>
                 <option value="Mansion">Mansion</option>
+                <option value="Duplex">Duplex</option>
               </select>
             </div>
 
@@ -120,15 +124,46 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
               </label>
               <select
                 value={localFilters.bedrooms || ''}
-                onChange={(e) => setLocalFilters({ ...localFilters, bedrooms: e.target.value ? parseInt(e.target.value) : undefined })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLocalFilters({ 
+                    ...localFilters, 
+                    bedrooms: value ? parseInt(value) : undefined 
+                  });
+                }}
                 className="w-full py-2.5 md:py-3 px-3 rounded-[4px] border border-[#dddddd] text-black bg-white focus:outline-none focus:ring-2 focus:ring-[#1f2462] focus:border-transparent"
               >
                 <option value="">Any</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5+</option>
+                <option value="1">1 Bedroom</option>
+                <option value="2">2 Bedrooms</option>
+                <option value="3">3 Bedrooms</option>
+                <option value="4">4 Bedrooms</option>
+                <option value="5">5 Bedrooms</option>
+                <option value="6">6+ Bedrooms</option>
+              </select>
+            </div>
+
+            {/* Bathrooms */}
+            <div>
+              <label className="block text-black text-sm md:text-base font-medium mb-2">
+                Bathrooms
+              </label>
+              <select
+                value={localFilters.bathrooms || ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLocalFilters({ 
+                    ...localFilters, 
+                    bathrooms: value ? parseInt(value) : undefined 
+                  });
+                }}
+                className="w-full py-2.5 md:py-3 px-3 rounded-[4px] border border-[#dddddd] text-black bg-white focus:outline-none focus:ring-2 focus:ring-[#1f2462] focus:border-transparent"
+              >
+                <option value="">Any</option>
+                <option value="1">1 Bathroom</option>
+                <option value="2">2 Bathrooms</option>
+                <option value="3">3 Bathrooms</option>
+                <option value="4">4+ Bathrooms</option>
               </select>
             </div>
 
@@ -140,8 +175,16 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  step="1000"
                   value={localFilters.minPrice || ''}
-                  onChange={(e) => setLocalFilters({ ...localFilters, minPrice: e.target.value ? parseInt(e.target.value) : undefined })}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setLocalFilters({ 
+                      ...localFilters, 
+                      minPrice: value && parseInt(value) > 0 ? parseInt(value) : undefined 
+                    });
+                  }}
                   className="w-full py-2.5 md:py-3 px-3 rounded-[4px] border border-[#dddddd] text-black bg-white placeholder:text-[#9E9E9E] focus:outline-none focus:ring-2 focus:ring-[#1f2462] focus:border-transparent"
                   placeholder="0"
                 />
@@ -152,8 +195,16 @@ export default function FilterModal({ isOpen, onClose, filters, onApplyFilters }
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  step="1000"
                   value={localFilters.maxPrice || ''}
-                  onChange={(e) => setLocalFilters({ ...localFilters, maxPrice: e.target.value ? parseInt(e.target.value) : undefined })}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setLocalFilters({ 
+                      ...localFilters, 
+                      maxPrice: value && parseInt(value) > 0 ? parseInt(value) : undefined 
+                    });
+                  }}
                   className="w-full py-2.5 md:py-3 px-3 rounded-[4px] border border-[#dddddd] text-black bg-white placeholder:text-[#9E9E9E] focus:outline-none focus:ring-2 focus:ring-[#1f2462] focus:border-transparent"
                   placeholder="No limit"
                 />

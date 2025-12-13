@@ -16,6 +16,13 @@ export async function POST(request: NextRequest) {
     url.searchParams.append('page', page);
     url.searchParams.append('limit', limit);
 
+    // Log request for debugging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('=== API Proxy Request ===');
+      console.log('URL:', url.toString());
+      console.log('Filters:', JSON.stringify(body, null, 2));
+    }
+
     // Forward the request to the backend API
     const response = await fetch(url.toString(), {
       method: 'POST',
@@ -24,6 +31,12 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify(body),
     });
+
+    // Log response for debugging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('=== API Proxy Response ===');
+      console.log('Status:', response.status);
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
