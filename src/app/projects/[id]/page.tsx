@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
 import PropertyCard from '../../../components/property/property-card';
 import InquiryModal from '../../../components/property/inquiry-modal';
 import DescriptionModal from '../../../components/property/description-modal';
@@ -88,7 +86,6 @@ export default function PropertyDetailPage() {
 
   return (
     <>
-      <Header />
       <main className="bg-neutral-50 min-h-screen pt-[120px] pb-0">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-[100px]">
           {/* Main Content */}
@@ -400,7 +397,6 @@ export default function PropertyDetailPage() {
           propertyTitle={property.title}
         />
       </main>
-      <Footer />
     </>
   );
 }

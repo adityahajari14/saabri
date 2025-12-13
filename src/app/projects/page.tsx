@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import PropertyCard from '../../components/property/property-card';
 import FilterModal from '../../components/property/FilterModal';
 import FAQ from '../../components/home/FAQ';
@@ -78,7 +76,6 @@ export default function ProjectsPage() {
 
   return (
     <>
-      <Header />
       <main className="bg-neutral-50 min-h-screen pt-[120px] pb-0">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-[100px]">
           {/* Search and Filter Bar */}
@@ -246,7 +243,6 @@ export default function ProjectsPage() {
           onApplyFilters={handleApplyFilters}
         />
       </main>
-      <Footer />
     </>
   );
 }
