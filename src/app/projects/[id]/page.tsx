@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, Suspense, lazy } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,8 +9,116 @@ import InquiryModal from '../../../components/property/inquiry-modal';
 import DescriptionModal from '../../../components/property/description-modal';
 import ImageViewerModal from '../../../components/property/image-viewer-modal';
 import AmenitiesModal from '../../../components/property/amenities-modal';
-import FAQ from '../../../components/home/FAQ';
 import { getPropertyById, getRelatedProperties, formatPrice, Property } from '../../../lib/properties';
+import { memo } from 'react';
+
+// Lazy load FAQ component to reduce initial bundle size
+const FAQ = lazy(() => import('../../../components/home/FAQ'));
+
+// Memoized Property Details Grid component
+const PropertyDetailsGrid = memo(({ property, onOpenAmenities }: { property: Property; onOpenAmenities: () => void }) => {
+  return (
+    <div className="bg-white border border-[#dddddd] rounded-[8px] p-4 md:p-5 lg:p-6 mb-6 md:mb-8 lg:mb-[30px]">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
+        {/* Developer Name - only show if exists and not empty */}
+        {property.developer && typeof property.developer === 'string' && property.developer.trim() !== '' && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Developer Name</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.developer}</span>
+          </div>
+        )}
+        
+        {/* City - only show if exists and not empty */}
+        {property.city && typeof property.city === 'string' && property.city.trim() !== '' && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">City</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.city}</span>
+          </div>
+        )}
+        
+        {/* Locality - only show if exists and not empty */}
+        {property.locality && typeof property.locality === 'string' && property.locality.trim() !== '' && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Locality</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.locality}</span>
+          </div>
+        )}
+        
+        {/* Bedrooms - only show if exists and greater than 0 */}
+        {property.bedrooms && property.bedrooms > 0 && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Bedrooms</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.bedrooms}</span>
+          </div>
+        )}
+        
+        {/* Area - only show if exists and greater than 0 */}
+        {property.area !== undefined && property.area !== null && property.area > 0 && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Area</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.area} sq. ft</span>
+          </div>
+        )}
+        
+        {/* Amenities - only show if exists and has items */}
+        {property.amenities && property.amenities.length > 0 && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Amenities</span>
+            <div className="flex flex-col gap-1">
+              <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">
+                {property.amenities.slice(0, 2).join(', ')}
+              </span>
+              {property.amenities.length > 2 && (
+                <button
+                  onClick={onOpenAmenities}
+                  className="text-[#1f2462] text-xs md:text-sm hover:underline text-left"
+                >
+                  +{property.amenities.length - 2} more
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+        
+        {/* Bathrooms - only show if exists and greater than 0 */}
+        {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Bathrooms</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.bathrooms}</span>
+          </div>
+        )}
+        
+        {/* Delivery Date - only show if exists and not empty */}
+        {property.readyDate && typeof property.readyDate === 'string' && property.readyDate.trim() !== '' && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Delivery Date</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.readyDate}</span>
+          </div>
+        )}
+        
+        {/* Floors - only show if exists and greater than 0 */}
+        {property.floors !== undefined && property.floors !== null && 
+         ((typeof property.floors === 'number' && property.floors > 0) || 
+          (typeof property.floors === 'string' && property.floors !== '0' && property.floors.trim() !== '' && property.floors.trim() !== 'null' && property.floors.trim() !== 'undefined')) && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Floors</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.floors}</span>
+          </div>
+        )}
+        
+        {/* Furnished - only show if exists and not empty */}
+        {property.furnished && typeof property.furnished === 'string' && property.furnished.trim() !== '' && (
+          <div className="flex flex-col gap-1">
+            <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Furnishing</span>
+            <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.furnished}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+PropertyDetailsGrid.displayName = 'PropertyDetailsGrid';
 
 export default function PropertyDetailPage() {
   const params = useParams();
@@ -35,17 +143,22 @@ export default function PropertyDetailPage() {
         const startTime = Date.now();
         
         try {
-          // Load property and related properties in parallel for better performance
-          const [propertyData, related] = await Promise.all([
-            getPropertyById(id),
-            Promise.resolve(null), // We'll load related after we have property data
-          ]);
+          // Load main property first
+          const propertyData = await getPropertyById(id);
           
           if (propertyData) {
             setProperty(propertyData);
-            // Load related properties after main property is loaded
-            const relatedProps = await getRelatedProperties(id, propertyData.type, 3);
-            setRelatedProperties(relatedProps);
+            
+            // Load related properties asynchronously after main property is set
+            // This allows the main content to render first
+            getRelatedProperties(id, propertyData.type, 3)
+              .then(relatedProps => {
+                setRelatedProperties(relatedProps);
+              })
+              .catch(error => {
+                console.error('Error loading related properties:', error);
+                // Don't block UI if related properties fail
+              });
           }
           
           // Ensure minimum loading time
@@ -80,6 +193,15 @@ export default function PropertyDetailPage() {
   const handleOpenAmenities = useCallback(() => setIsAmenitiesModalOpen(true), []);
   const handleCloseAmenities = useCallback(() => setIsAmenitiesModalOpen(false), []);
   const handleImageSelect = useCallback((index: number) => setSelectedImage(index), []);
+  
+  // Memoize thumbnail click handlers
+  const handleThumbnailClick = useCallback((idx: number, isLastWithMore: boolean) => {
+    if (isLastWithMore) {
+      handleOpenImageViewer();
+    } else {
+      handleImageSelect(idx);
+    }
+  }, [handleOpenImageViewer, handleImageSelect]);
 
   // Memoize image processing
   const images = useMemo(() => {
@@ -103,6 +225,23 @@ export default function PropertyDetailPage() {
     if (!property) return false;
     return property.description.length > 200;
   }, [property]);
+
+  // Memoize related properties section
+  const relatedPropertiesSection = useMemo(() => {
+    if (relatedProperties.length === 0) return null;
+    return (
+      <div className="mb-6 md:mb-8 lg:mb-[30px]">
+        <h2 className="font-medium text-xl md:text-2xl lg:text-[32px] leading-normal text-black mb-4 md:mb-6 lg:mb-[30px]">
+          Other Properties
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-[30px]">
+          {relatedProperties.map((relatedProperty) => (
+            <PropertyCard key={relatedProperty.id} property={relatedProperty} />
+          ))}
+        </div>
+      </div>
+    );
+  }, [relatedProperties]);
 
   if (isLoading) {
     return (
@@ -177,13 +316,7 @@ export default function PropertyDetailPage() {
                           return (
                             <div
                               key={idx}
-                              onClick={() => {
-                                if (isLastWithMore) {
-                                  handleOpenImageViewer();
-                                } else {
-                                  handleImageSelect(idx);
-                                }
-                              }}
+                              onClick={() => handleThumbnailClick(idx, isLastWithMore)}
                               className={`relative w-[72px] h-[54px] rounded-[8px] overflow-hidden cursor-pointer transition-all flex-shrink-0 ${
                                 isSelected 
                                   ? 'ring-2 ring-[#1f2462] ring-offset-2' 
@@ -222,13 +355,7 @@ export default function PropertyDetailPage() {
                         return (
                           <div
                             key={idx}
-                            onClick={() => {
-                              if (isLastWithMore) {
-                                handleOpenImageViewer();
-                              } else {
-                                handleImageSelect(idx);
-                              }
-                            }}
+                            onClick={() => handleThumbnailClick(idx, isLastWithMore)}
                             className={`relative w-[94px] lg:w-[96px] h-[66px] lg:h-[70px] rounded-[8px] overflow-hidden cursor-pointer transition-all flex-shrink-0 ${
                               isSelected 
                                 ? 'ring-2 ring-[#1f2462] ring-offset-2' 
@@ -355,121 +482,20 @@ export default function PropertyDetailPage() {
           </div>
 
           {/* Property Details Grid */}
-          <div className="bg-white border border-[#dddddd] rounded-[8px] p-4 md:p-5 lg:p-6 mb-6 md:mb-8 lg:mb-[30px]">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
-              {/* Developer Name - only show if exists and not empty */}
-              {property.developer && typeof property.developer === 'string' && property.developer.trim() !== '' && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Developer Name</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.developer}</span>
-                </div>
-              )}
-              
-              {/* City - only show if exists and not empty */}
-              {property.city && typeof property.city === 'string' && property.city.trim() !== '' && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">City</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.city}</span>
-                </div>
-              )}
-              
-              {/* Locality - only show if exists and not empty */}
-              {property.locality && typeof property.locality === 'string' && property.locality.trim() !== '' && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Locality</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.locality}</span>
-                </div>
-              )}
-              
-              {/* Bedrooms - only show if exists and greater than 0 */}
-              {property.bedrooms && property.bedrooms > 0 && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Bedrooms</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.bedrooms}</span>
-                </div>
-              )}
-              
-              {/* Area - only show if exists and greater than 0 */}
-              {property.area !== undefined && property.area !== null && property.area > 0 && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Area</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.area} sq. ft</span>
-                </div>
-              )}
-              
-              {/* Amenities - only show if exists and has items */}
-              {property.amenities && property.amenities.length > 0 && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Amenities</span>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">
-                      {property.amenities.slice(0, 2).join(', ')}
-                    </span>
-                    {property.amenities.length > 2 && (
-                      <button
-                        onClick={handleOpenAmenities}
-                        className="text-[#1f2462] text-xs md:text-sm hover:underline text-left"
-                      >
-                        +{property.amenities.length - 2} more
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-              
-              {/* Bathrooms - only show if exists and greater than 0 */}
-              {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Bathrooms</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.bathrooms}</span>
-                </div>
-              )}
-              
-              {/* Delivery Date - only show if exists and not empty */}
-              {property.readyDate && typeof property.readyDate === 'string' && property.readyDate.trim() !== '' && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Delivery Date</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.readyDate}</span>
-                </div>
-              )}
-              
-              {/* Floors - only show if exists and greater than 0 */}
-              {property.floors !== undefined && property.floors !== null && 
-               ((typeof property.floors === 'number' && property.floors > 0) || 
-                (typeof property.floors === 'string' && property.floors !== '0' && property.floors.trim() !== '' && property.floors.trim() !== 'null' && property.floors.trim() !== 'undefined')) && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Floors</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.floors}</span>
-                </div>
-              )}
-              
-              {/* Furnished - only show if exists and not empty */}
-              {property.furnished && typeof property.furnished === 'string' && property.furnished.trim() !== '' && (
-                <div className="flex flex-col gap-1">
-                  <span className="text-[#61656e] text-xs md:text-sm lg:text-[16px] font-medium leading-[20px] md:leading-[27px]">Furnishing</span>
-                  <span className="text-black text-sm md:text-base lg:text-[18px] font-medium leading-[20px] md:leading-[27px]">{property.furnished}</span>
-                </div>
-              )}
-            </div>
-          </div>
+          <PropertyDetailsGrid property={property} onOpenAmenities={handleOpenAmenities} />
 
-          {/* Related Properties */}
-          {relatedProperties.length > 0 && (
-            <div className="mb-6 md:mb-8 lg:mb-[30px]">
-              <h2 className="font-medium text-xl md:text-2xl lg:text-[32px] leading-normal text-black mb-4 md:mb-6 lg:mb-[30px]">
-                Other Properties
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-[30px]">
-                {relatedProperties.map((relatedProperty) => (
-                  <PropertyCard key={relatedProperty.id} property={relatedProperty} />
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Related Properties - Memoized */}
+          {relatedPropertiesSection}
         </div>
 
-        {/* FAQ Section */}
-        <FAQ />
+        {/* FAQ Section - Lazy loaded */}
+        <Suspense fallback={
+          <div className="min-h-[200px] flex items-center justify-center">
+            <div className="text-black text-base">Loading FAQ...</div>
+          </div>
+        }>
+          <FAQ />
+        </Suspense>
 
         {/* Modals */}
         <InquiryModal
