@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PropertyCard from '../../components/property/property-card';
 import FilterModal from '../../components/property/FilterModal';
 import FAQ from '../../components/home/FAQ';
 import { getPaginatedProperties, FilterOptions, Property } from '../../lib/properties';
 
-export default function ProjectsPage() {
+function ProjectsPageContent() {
   const searchParams = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -310,5 +310,19 @@ export default function ProjectsPage() {
         />
       </main>
     </>
+  );
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center pt-[120px]">
+        <div className="text-center">
+          <div className="text-black text-lg md:text-xl font-semibold">Loading...</div>
+        </div>
+      </div>
+    }>
+      <ProjectsPageContent />
+    </Suspense>
   );
 }

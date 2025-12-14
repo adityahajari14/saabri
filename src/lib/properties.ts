@@ -653,9 +653,14 @@ export function filterProperties(properties: Property[], filters: FilterOptions)
       }
     }
     
-    // Type filter
-    if (filters.type && filters.type.trim() !== '') {
-      if (!property.type || property.type.toLowerCase() !== filters.type.toLowerCase()) {
+    // Type filter - handle both string and string[] cases
+    if (filters.type) {
+      const typeFilter = Array.isArray(filters.type) ? filters.type : [filters.type];
+      const hasMatchingType = typeFilter.some(
+        filterType => filterType.trim() !== '' && 
+        property.type?.toLowerCase() === filterType.toLowerCase()
+      );
+      if (!hasMatchingType) {
         return false;
       }
     }
@@ -663,13 +668,6 @@ export function filterProperties(properties: Property[], filters: FilterOptions)
     // Bedrooms filter - filter for properties with AT LEAST the specified number of bedrooms
     if (filters.bedrooms !== undefined && filters.bedrooms > 0) {
       if (!property.bedrooms || property.bedrooms < filters.bedrooms) {
-        return false;
-      }
-    }
-    
-    // Bathrooms filter - filter for properties with AT LEAST the specified number of bathrooms
-    if (filters.bathrooms !== undefined && filters.bathrooms > 0) {
-      if (!property.bathrooms || property.bathrooms < filters.bathrooms) {
         return false;
       }
     }
@@ -687,13 +685,6 @@ export function filterProperties(properties: Property[], filters: FilterOptions)
     // Max price filter - exclude properties above maximum
     if (filters.maxPrice !== undefined && filters.maxPrice > 0) {
       if (propertyPrice > filters.maxPrice) {
-        return false;
-      }
-    }
-    
-    // Listing type filter (sale/rent)
-    if (filters.listingType && filters.listingType.trim() !== '') {
-      if (!property.listingType || property.listingType !== filters.listingType) {
         return false;
       }
     }
