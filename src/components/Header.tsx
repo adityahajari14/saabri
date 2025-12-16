@@ -21,13 +21,15 @@ export default function Header() {
       {/* Logo */}
       <div className="flex items-center gap-1">
         <Link href="/" className="flex items-center">
-          <div className="relative h-6 w-20 md:h-8 md:w-24">
+          <div className="relative h-10 w-14 md:h-12">
             <Image
-              src="/logo.webp"
+              src="/logoFooter.webp"
               alt="Saabri Group Logo"
               fill
               className="object-contain"
               priority
+              unoptimized={true}
+              quality={100}
             />
           </div>
         </Link>

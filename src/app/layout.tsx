@@ -40,10 +40,10 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   openGraph: {
-    images: "/logo.webp",
+    images: "/logoFooter.webp",
   },
   twitter: {
-    images: "/logo.webp",
+    images: "/logoFooter.webp",
   }
 };
 

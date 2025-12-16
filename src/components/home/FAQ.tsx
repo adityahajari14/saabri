@@ -5,26 +5,68 @@ import { useEffect, useRef, useState } from "react";
 const faqs = [
   {
     id: 1,
-    question: 'What is Sabri?',
-    answer: 'Cluster housing perumnas is a housing concept that consists of several houses in a gated cluster. Cluster housing perumnas offers comfortable, secure, and affordable housing with various complete and modern facilities.',
+    question: "How does Saabri Aziz Properties help me choose the right property?",
+    answer: "We begin by understanding your purpose - whether it's end-use, rental income, or long-term investment. Based on your goals, budget, and timeline, we curate options that truly make sense for you.",
     isOpen: false
   },
   {
     id: 2,
-    question: 'Where is the location of cluster housing perumnas?',
-    answer: 'Cluster housing perumnas is strategically located in prime areas with easy access to major facilities and transportation hubs.',
+    question: "Is buying property in Dubai a safe and transparent process?",
+    answer: "Yes. Dubai's real estate market is well regulated, with clear ownership laws and structured transaction processes. We guide you through every step to ensure clarity and confidence throughout the journey.",
     isOpen: false
   },
   {
     id: 3,
-    question: 'How much are the prices and types of houses in cluster housing perumnas?',
-    answer: 'We offer various house types and price ranges to suit different needs and budgets. Please contact us for detailed pricing information.',
+    question: "I'm buying property in Dubai for the first time. Can you guide me?",
+    answer: "Absolutely. We simplify the process by explaining locations, pricing, payment plans, documentation, and timelines in a clear and easy-to-understand manner.",
     isOpen: false
   },
   {
     id: 4,
-    question: 'What are the facilities provided in cluster housing perumnas?',
-    answer: 'Cluster housing perumnas provides complete facilities including playgrounds, sports fields, shopping centers, schools, security systems, and more.',
+    question: "Can overseas buyers and NRIs purchase property through you?",
+    answer: "Yes. We regularly assist international clients with virtual consultations, online coordination, and complete transaction support from start to finish.",
+    isOpen: false
+  },
+  {
+    id: 5,
+    question: "Should I consider an off-plan property or a ready property?",
+    answer: "Both have their advantages. We help you compare options based on your financial goals, expected returns, flexibility, and possession timelines - so you can make an informed decision.",
+    isOpen: false
+  },
+  {
+    id: 6,
+    question: "Are the costs and charges clearly explained upfront?",
+    answer: "Yes. All costs related to the transaction are explained transparently before you proceed, ensuring there are no unexpected surprises later.",
+    isOpen: false
+  },
+  {
+    id: 7,
+    question: "Will you assist with paperwork and documentation?",
+    answer: "Yes. We assist with documentation coordination, offer preparation, and follow-ups to ensure the process moves smoothly and efficiently.",
+    isOpen: false
+  },
+  {
+    id: 8,
+    question: "Do you help with investment insights and market guidance?",
+    answer: "We share market-based insights on locations, demand trends, rental potential, and pricing to help you take well-informed decisions.",
+    isOpen: false
+  },
+  {
+    id: 9,
+    question: "What happens after I finalize a property?",
+    answer: "We continue to support you with coordination until completion and can connect you with trusted partners for leasing, handover, or post-purchase assistance if required.",
+    isOpen: false
+  },
+  {
+    id: 10,
+    question: "How long does the property buying process take?",
+    answer: "Timelines vary depending on the type of property and payment structure. We clearly explain expected timelines before you move ahead.",
+    isOpen: false
+  },
+  {
+    id: 11,
+    question: "How do I get started?",
+    answer: "You can contact us through our website, WhatsApp, or phone. Our team will connect with you, understand your requirement, and guide you step by step.",
     isOpen: false
   }
 ];
