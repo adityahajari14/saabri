@@ -59,3 +59,33 @@ details[open] .details-open-icon {
 details[open] .details-closed-icon {
   display: none;
 }
+
+/* Loader animations */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes logo-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(0.995) translateY(-2px);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-logo-subtle {
+  animation: logo-subtle 3s ease-in-out infinite;
+  animation-delay: 0.3s;
+}

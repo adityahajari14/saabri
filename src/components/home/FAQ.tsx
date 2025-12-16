@@ -114,7 +114,7 @@ export default function FAQ() {
         </div>
 
         {/* Right Column - FAQ Items */}
-        <div className="flex flex-col gap-4 md:gap-5 grow min-w-0 w-full lg:w-auto">
+        <div className="flex flex-col gap-4 md:gap-5 grow min-w-0 w-full lg:w-auto max-h-[600px] md:max-h-[600px] overflow-y-auto pr-2 scrollbar-hide">
           {faqs.map((faq, index) => (
             <details
               key={faq.id}

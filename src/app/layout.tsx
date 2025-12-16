@@ -3,6 +3,7 @@ import { Manrope, Noto_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} antialiased`}
       >
+        <Loader />
         <Header />
         {children}
         <Footer />
