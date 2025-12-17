@@ -9,7 +9,7 @@ export default function Loader() {
 
   useEffect(() => {
     // Minimum display time for smooth experience
-    const minDisplayTime = 800;
+    const minDisplayTime = 2000; // 3 seconds
     const startTime = Date.now();
 
     const hideLoader = () => {
